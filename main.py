@@ -19,7 +19,7 @@ headers = {
 
 def get_gemini_message():
     # خليك تعتمد GEMINI_API_KEY من البيئة بدل الحط المباشر
-    api_key = "AIzaSyDybAXRfYv832CWNwY7rrVt_YNfYmkHpz8"
+    api_key = "AIzaSyBKWx2oL_nm3EVjpPHifQ0nZYn2NEIE1h0"
     url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
     headers = {"Content-Type": "application/json", "X-goog-api-key": api_key}
     data = {
