@@ -18,26 +18,27 @@ headers = {
 }
 
 def get_gemini_message():
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+    # خليك تعتمد GEMINI_API_KEY من البيئة بدل الحط المباشر
+    api_key = "AIzaSyDybAXRfYv832CWNwY7rrVt_YNfYmkHpz8"
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    headers = {"Content-Type": "application/json", "X-goog-api-key": api_key}
     data = {
         "contents": [
-            {
-                "parts": [
-                    {
-                        "text": "اكتب لي رسالة مشجعة من السيد المسيح موجهة للقارئ بأسلوب شخصي مكونة من 200 حرف."
-                    }
-                ]
-            }
+            {"parts": [{"text": "اكتب لي رسالة مشجعة من السيد المسيح موجهة للقارئ بأسلوب شخصي مكونة حوالي 150-250 حرف."}]}
         ]
     }
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 200:
-        result = response.json()
-        message = result["candidates"][0]["content"]["parts"][0]["text"]
-        return message.strip()
+    resp = requests.post(url, headers=headers, json=data, timeout=30)
+    if resp.status_code == 200:
+        j = resp.json()
+        try:
+            return j["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as e:
+            print("❌ لم أجد النص في رد Gemini:", e, j)
+            return None
     else:
-        print("❌ فشل في طلب رسالة من Gemini:", response.text)
+        print(f"❌ فشل في طلب رسالة من Gemini: {resp.status_code} - {resp.text}")
         return None
+
 
 def post_to_facebook(text):
     payload = {
